@@ -87,3 +87,6 @@ export async function compressImage(file: File, max = 1280, quality = 0.8): Prom
 }
 
 export const cls = (...xs: (string | false | null | undefined)[]) => xs.filter(Boolean).join(' ')
+
+export const fillTpl = (tpl: string, vars: Record<string, string>) =>
+  Object.entries(vars).reduce((s, [k, v]) => s.split(`{${k}}`).join(v), tpl)

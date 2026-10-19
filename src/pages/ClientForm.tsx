@@ -8,7 +8,7 @@ export default function ClientForm() {
   const { t } = useI18n()
   const nav = useNavigate()
   const { id } = useParams()
-  const [f, setF] = useState({ name: '', phone: '', birthday: '', colorFormula: '', allergies: '', preferences: '' })
+  const [f, setF] = useState({ name: '', phone: '', colorFormula: '', allergies: '', preferences: '' })
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
@@ -18,7 +18,6 @@ export default function ClientForm() {
           setF({
             name: c.name,
             phone: c.phone,
-            birthday: c.birthday ?? '',
             colorFormula: c.colorFormula ?? '',
             allergies: c.allergies ?? '',
             preferences: c.preferences ?? '',
@@ -34,7 +33,6 @@ export default function ClientForm() {
     const data = {
       name: f.name.trim(),
       phone: f.phone.trim(),
-      birthday: f.birthday || undefined,
       colorFormula: f.colorFormula.trim() || undefined,
       allergies: f.allergies.trim() || undefined,
       preferences: f.preferences.trim() || undefined,
@@ -56,9 +54,6 @@ export default function ClientForm() {
       </Field>
       <Field label={t('phone')}>
         <Input type="tel" inputMode="tel" dir="ltr" value={f.phone} onChange={set('phone')} placeholder="05 / 06 / 07 …" />
-      </Field>
-      <Field label={t('birthday')}>
-        <Input type="date" value={f.birthday} onChange={set('birthday')} />
       </Field>
 
       <h2 className="mb-3 mt-6 font-display text-xl font-bold">{t('techNotes')}</h2>

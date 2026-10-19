@@ -29,7 +29,7 @@ export default function More() {
             </span>
             <span className="flex-1 font-semibold">{t(it.label)}</span>
             {!!it.badge && (
-              <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${it.danger ? 'bg-red-100 text-red-700' : 'bg-blush text-rose-dark'}`}>
+              <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${it.danger ? 'bg-red-100 text-red-700' : 'bg-blush text-rose-ink'}`}>
                 {it.danger && t('lowStock') + ' · '}
                 {it.badge}
               </span>

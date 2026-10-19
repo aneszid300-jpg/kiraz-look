@@ -77,7 +77,7 @@ export default function BridalForm() {
               key={s.id}
               type="button"
               onClick={() => toggle(s.name, s.price)}
-              className={cls('rounded-full px-3 py-1.5 text-sm ring-1', on ? 'bg-rose text-white ring-rose' : 'bg-white ring-nude')}
+              className={cls('rounded-full px-3 py-1.5 text-sm ring-1', on ? 'bg-rose text-onaccent ring-rose' : 'bg-white ring-nude')}
             >
               {on && <Icon name="check" size={14} className="-mt-0.5 me-1 inline" />}
               {s.name}

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Appointment, type Status } from '../db'
-import { useClientMap, useServiceMap } from '../hooks'
+import { useClientMap, useServiceMap, useSettings } from '../hooks'
 import { useI18n } from '../i18n'
-import { cls, endTime, money, waLink } from '../utils'
+import { cls, endTime, fillTpl, money, waLink } from '../utils'
 import { btnCls, Button, Icon, Sheet, STATUSES, statusStyle } from './ui'
 
 export default function ApptSheet({ appt, onClose }: { appt: Appointment | null; onClose: () => void }) {
@@ -11,6 +11,7 @@ export default function ApptSheet({ appt, onClose }: { appt: Appointment | null;
   const nav = useNavigate()
   const clients = useClientMap()
   const services = useServiceMap()
+  const [settings] = useSettings()
   const payment = useLiveQuery(() => (appt?.paymentId ? db.payments.get(appt.paymentId) : undefined), [appt?.paymentId])
 
   if (!appt) return null
@@ -23,10 +24,11 @@ export default function ApptSheet({ appt, onClose }: { appt: Appointment | null;
   const reminder = client
     ? waLink(
         client.phone,
-        t('reminderMsg', {
+        fillTpl(settings.reminderTpl || t('reminderMsg'), {
           name: client.name.split(' ')[0],
           date: fmtDate(appt.date, { weekday: 'long', day: 'numeric', month: 'long' }),
           time: appt.start,
+          salon: settings.salonName,
         }),
       )
     : ''

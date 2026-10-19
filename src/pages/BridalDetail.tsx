@@ -6,6 +6,7 @@ import { useI18n } from '../i18n'
 import { money, nowTime, today, waLink } from '../utils'
 import { btnCls, Button, Card, confirmDelete, Field, Icon, Input, Page, SectionTitle, Sheet } from '../components/ui'
 import { MethodPicker } from './Checkout'
+import { Countdown } from './Bridals'
 
 export default function BridalDetail() {
   const { t, fmtDate } = useI18n()
@@ -66,7 +67,10 @@ export default function BridalDetail() {
         <div className="flex items-center gap-2 text-sm text-ink/70">
           <Icon name="heart" size={16} /> {t('eventDate')}
         </div>
-        <div className="mt-1 text-xl font-bold capitalize">{fmtLong(b.eventDate)}</div>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <span className="text-xl font-bold capitalize">{fmtLong(b.eventDate)}</span>
+          <Countdown date={b.eventDate} />
+        </div>
         {b.trialDate && (
           <div className="mt-2 text-sm capitalize">
             {t('trialDate')} : <b>{fmtLong(b.trialDate)}</b>
@@ -85,7 +89,7 @@ export default function BridalDetail() {
         </Card>
         <Card className="!p-3">
           <div className="text-xs text-muted">{t('remaining')}</div>
-          <div className="font-bold text-rose-dark">{money(Math.max(0, rest))}</div>
+          <div className="font-bold text-rose-ink">{money(Math.max(0, rest))}</div>
         </Card>
       </div>
 

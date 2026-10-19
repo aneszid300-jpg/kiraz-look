@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom'
 import { registerSW } from 'virtual:pwa-register'
 import { I18nProvider } from './i18n'
 import App from './App'
+import './theme'
 import './index.css'
 
 registerSW({ immediate: true })

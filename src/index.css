@@ -10,8 +10,40 @@
   --color-gold: #c9a96e;
   --color-ink: #3d2c2e;
   --color-muted: #8a7376;
+  --color-rose-ink: #9a5662;
+  --color-onaccent: #ffffff;
   --font-sans: 'Inter', 'Tajawal', system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', 'Tajawal', serif;
+}
+
+/* Dark theme: same tokens, re-stepped for a dark surface */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-white: #2a2124;
+  --color-cream: #1d1517;
+  --color-ink: #f4e9eb;
+  --color-muted: #b49fa3;
+  --color-nude: #463739;
+  --color-blush: #4f3038;
+  --color-blush-soft: #35262b;
+  --color-rose-ink: #eaa9b4;
+  --color-emerald-50: #1d3127;
+  --color-emerald-100: #234033;
+  --color-emerald-600: #4cc38a;
+  --color-emerald-700: #6fd3a5;
+  --color-emerald-800: #86dcb4;
+  --color-red-50: #3a1f22;
+  --color-red-100: #4a2427;
+  --color-red-200: #5c2b30;
+  --color-red-600: #f07b7b;
+  --color-red-700: #f28b8b;
+  --color-red-800: #f5a0a0;
+  --color-amber-50: #3a2e18;
+  --color-amber-100: #4a3a1a;
+  --color-amber-800: #f0c674;
+  --color-amber-900: #f3d08a;
+  --color-stone-100: #3a3234;
+  --color-stone-600: #c9bdbf;
 }
 
 @layer base {

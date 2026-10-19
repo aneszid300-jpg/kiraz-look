@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import type { Status } from '../db'
 import { useI18n } from '../i18n'
 import { cls } from '../utils'
+import { useTheme } from '../theme'
 
 /* ---------- Icons ---------- */
 
@@ -33,6 +34,14 @@ const paths = {
   close: 'M18 6L6 18M6 6l12 12',
   download: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',
   upload: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12',
+  bell: 'M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0',
+  moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+  sun: 'M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4',
+  arrowUp: 'M12 19V5M5 12l7-7 7 7',
+  arrowDown: 'M12 5v14M19 12l-7 7-7-7',
+  clock: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 6v6l4 2',
+  lock: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+  repeat: 'M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3',
 } as const
 
 export type IconName = keyof typeof paths
@@ -128,7 +137,7 @@ export function Fab({ onClick, label }: { onClick: () => void; label: string }) 
       onClick={onClick}
       aria-label={label}
       className={cls(
-        'fixed end-5 z-30 grid h-16 w-16 place-items-center rounded-full bg-rose text-white shadow-lg shadow-rose/40 active:scale-95 active:bg-rose-dark',
+        'fixed end-5 z-30 grid h-16 w-16 place-items-center rounded-full bg-rose text-onaccent shadow-lg shadow-rose/40 active:scale-95 active:bg-rose-dark',
         hasNav ? 'bottom-[calc(5.5rem+env(safe-area-inset-bottom))]' : 'bottom-[calc(1.5rem+env(safe-area-inset-bottom))]',
       )}
     >
@@ -160,8 +169,8 @@ type Variant = 'primary' | 'ghost' | 'danger' | 'soft'
 export const btnCls = (variant: Variant = 'primary', className?: string) =>
   cls(
     'flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 font-semibold transition active:scale-[0.98] disabled:opacity-50',
-    variant === 'primary' && 'bg-rose text-white active:bg-rose-dark',
-    variant === 'soft' && 'bg-blush text-rose-dark',
+    variant === 'primary' && 'bg-rose text-onaccent active:bg-rose-dark',
+    variant === 'soft' && 'bg-blush text-rose-ink',
     variant === 'ghost' && 'border border-nude bg-white text-ink',
     variant === 'danger' && 'bg-red-50 text-red-700',
     className,
@@ -178,7 +187,7 @@ export function Segmented<T extends string>({ value, options, onChange }: { valu
         <button
           key={o.value}
           onClick={() => onChange(o.value)}
-          className={cls('flex-1 rounded-lg py-2 text-sm font-semibold', value === o.value ? 'bg-white text-rose-dark shadow-sm' : 'text-muted')}
+          className={cls('flex-1 rounded-lg py-2 text-sm font-semibold', value === o.value ? 'bg-white text-rose-ink shadow-sm' : 'text-muted')}
         >
           {o.label}
         </button>
@@ -201,7 +210,7 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
-      <div className="animate-fade absolute inset-0 bg-ink/40" onClick={onClose} />
+      <div className="animate-fade absolute inset-0 bg-black/50" onClick={onClose} />
       <div className="animate-sheet safe-bottom relative max-h-[90dvh] overflow-y-auto rounded-t-3xl bg-cream">
         <div className="sticky top-0 z-10 flex items-center justify-between bg-cream px-5 pb-2 pt-3">
           <h3 className="font-display text-xl font-bold">{title}</h3>
@@ -220,7 +229,7 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
 export const STATUSES: Status[] = ['confirmed', 'arrived', 'done', 'cancelled', 'noshow']
 
 export const statusStyle: Record<Status, { dot: string; badge: string; bar: string }> = {
-  confirmed: { dot: 'bg-rose', badge: 'bg-blush text-rose-dark', bar: 'border-s-rose' },
+  confirmed: { dot: 'bg-rose', badge: 'bg-blush text-rose-ink', bar: 'border-s-rose' },
   arrived: { dot: 'bg-amber-500', badge: 'bg-amber-100 text-amber-800', bar: 'border-s-amber-500' },
   done: { dot: 'bg-emerald-500', badge: 'bg-emerald-100 text-emerald-800', bar: 'border-s-emerald-500' },
   cancelled: { dot: 'bg-stone-400', badge: 'bg-stone-100 text-stone-600', bar: 'border-s-stone-400' },
@@ -240,7 +249,7 @@ export function Avatar({ name, size = 44 }: { name: string; size?: number }) {
     .map((w) => w[0]?.toUpperCase())
     .join('')
   return (
-    <div style={{ width: size, height: size }} className="grid shrink-0 place-items-center rounded-full bg-blush font-semibold text-rose-dark">
+    <div style={{ width: size, height: size }} className="grid shrink-0 place-items-center rounded-full bg-blush font-semibold text-rose-ink">
       {initials || '?'}
     </div>
   )
@@ -248,4 +257,17 @@ export function Avatar({ name, size = 44 }: { name: string; size?: number }) {
 
 export function confirmDelete(t: (k: 'confirmDelete') => string) {
   return window.confirm(t('confirmDelete'))
+}
+
+export function ThemeToggle() {
+  const [theme, setTheme] = useTheme()
+  return (
+    <button
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-nude active:bg-blush"
+      aria-label="theme"
+    >
+      <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
+    </button>
+  )
 }

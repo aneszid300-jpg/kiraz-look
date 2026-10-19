@@ -80,7 +80,27 @@ export interface Expense {
   date: string
   category: string
   amount: number
+  method?: PayMethod // undefined = cash (older rows)
   note?: string
+  createdAt: number
+}
+
+/** One row per day the cash drawer was opened */
+export interface CashDay {
+  date: string
+  opening: number
+  closing?: number // counted cash at close
+  closedAt?: number
+}
+
+/** Manual drawer movement that is neither a sale nor an expense */
+export interface CashMove {
+  id: string
+  date: string
+  time: string
+  type: 'in' | 'out'
+  amount: number
+  label: string
   createdAt: number
 }
 
@@ -110,6 +130,8 @@ export const db = new Dexie('kiraz-look') as Dexie & {
   expenses: EntityTable<Expense, 'id'>
   bridals: EntityTable<Bridal, 'id'>
   settings: EntityTable<Setting, 'key'>
+  cashDays: EntityTable<CashDay, 'date'>
+  cashMoves: EntityTable<CashMove, 'id'>
 }
 
 db.version(1).stores({
@@ -122,6 +144,11 @@ db.version(1).stores({
   expenses: 'id, date, category',
   bridals: 'id, clientId, eventDate',
   settings: 'key',
+})
+
+db.version(2).stores({
+  cashDays: 'date',
+  cashMoves: 'id, date',
 })
 
 export const uid = () =>
@@ -172,7 +199,7 @@ export async function exportBackup(): Promise<Blob> {
   const photos = await db.photos.toArray()
   const data = {
     app: 'kiraz-look',
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     clients: await db.clients.toArray(),
     services: await db.services.toArray(),
@@ -182,6 +209,8 @@ export async function exportBackup(): Promise<Blob> {
     expenses: await db.expenses.toArray(),
     bridals: await db.bridals.toArray(),
     settings: await db.settings.toArray(),
+    cashDays: await db.cashDays.toArray(),
+    cashMoves: await db.cashMoves.toArray(),
     photos: await Promise.all(
       photos.map(async (p) => ({ ...p, blob: await blobToDataUrl(p.blob) })),
     ),
@@ -208,6 +237,8 @@ export async function importBackup(file: File) {
     await db.expenses.bulkAdd(data.expenses ?? [])
     await db.bridals.bulkAdd(data.bridals ?? [])
     await db.settings.bulkAdd(data.settings ?? [])
+    await db.cashDays.bulkAdd(data.cashDays ?? [])
+    await db.cashMoves.bulkAdd(data.cashMoves ?? [])
     await db.photos.bulkAdd(photos)
   })
 }

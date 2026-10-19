@@ -22,3 +22,34 @@ export function groupBy<T>(xs: T[], key: (x: T) => string) {
   }
   return m
 }
+
+export interface SalonSettings {
+  salonName: string
+  salonPhone: string
+  address: string
+  openTime: string
+  closeTime: string
+  slotStep: number
+  reminderTpl: string // empty = default translated message
+  lastBackup?: number
+}
+
+export const DEFAULT_SETTINGS: SalonSettings = {
+  salonName: 'Kiraz Look',
+  salonPhone: '',
+  address: '',
+  openTime: '09:00',
+  closeTime: '19:00',
+  slotStep: 30,
+  reminderTpl: '',
+}
+
+export function useSettings(): [SalonSettings, (patch: Partial<SalonSettings>) => Promise<void>] {
+  const row = useLiveQuery(() => db.settings.get('salon'), [])
+  const value = { ...DEFAULT_SETTINGS, ...((row?.value as Partial<SalonSettings>) ?? {}) }
+  const update = async (patch: Partial<SalonSettings>) => {
+    const cur = (await db.settings.get('salon'))?.value as Partial<SalonSettings> | undefined
+    await db.settings.put({ key: 'salon', value: { ...DEFAULT_SETTINGS, ...cur, ...patch } })
+  }
+  return [value, update]
+}

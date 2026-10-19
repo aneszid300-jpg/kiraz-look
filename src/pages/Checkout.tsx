@@ -18,7 +18,7 @@ export function MethodPicker({ value, onChange }: { value: PayMethod; onChange: 
           key={m}
           type="button"
           onClick={() => onChange(m)}
-          className={cls('rounded-xl py-3 text-sm font-semibold ring-1', value === m ? 'bg-rose text-white ring-rose' : 'bg-white ring-nude')}
+          className={cls('rounded-xl py-3 text-sm font-semibold ring-1', value === m ? 'bg-rose text-onaccent ring-rose' : 'bg-white ring-nude')}
         >
           {t(`m_${m}`)}
         </button>

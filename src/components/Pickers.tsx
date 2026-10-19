@@ -131,8 +131,9 @@ export function ClientPicker({ value, onChange }: { value?: string; onChange: (i
   )
 }
 
-export function ServiceChips({ value, onChange }: { value: string[]; onChange: (ids: string[]) => void }) {
-  const services = useServices().filter((s) => s.active || value.includes(s.id))
+export function ServiceChips({ value, onChange, query = '' }: { value: string[]; onChange: (ids: string[]) => void; query?: string }) {
+  const q = normalize(query)
+  const services = useServices().filter((s) => (s.active || value.includes(s.id)) && (!q || normalize(s.name).includes(q) || normalize(s.category).includes(q)))
   const groups = groupBy(services, (s) => s.category || '—')
   const toggle = (id: string) => onChange(value.includes(id) ? value.filter((x) => x !== id) : [...value, id])
 
@@ -149,10 +150,10 @@ export function ServiceChips({ value, onChange }: { value: string[]; onChange: (
                   type="button"
                   key={s.id}
                   onClick={() => toggle(s.id)}
-                  className={cls('rounded-xl px-3 py-2 text-start text-sm ring-1 transition', on ? 'bg-rose text-white ring-rose' : 'bg-white ring-nude')}
+                  className={cls('rounded-xl px-3 py-2 text-start text-sm ring-1 transition', on ? 'bg-rose text-onaccent ring-rose' : 'bg-white ring-nude')}
                 >
                   <span className="block font-semibold">{s.name}</span>
-                  <span className={cls('block text-xs', on ? 'text-white/85' : 'text-muted')}>
+                  <span className={cls('block text-xs', on ? 'text-onaccent/85' : 'text-muted')}>
                     {money(s.price)} · {fmtDuration(s.duration)}
                   </span>
                 </button>

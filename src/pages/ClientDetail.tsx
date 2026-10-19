@@ -91,11 +91,6 @@ export default function ClientDetail() {
           <div className="text-muted" dir="ltr">
             {client.phone}
           </div>
-          {client.birthday && (
-            <div className="flex items-center gap-1 text-sm text-muted">
-              <Icon name="cake" size={14} /> {fmtDate(client.birthday, { day: 'numeric', month: 'long' })}
-            </div>
-          )}
         </div>
       </div>
 
@@ -169,7 +164,7 @@ export default function ClientDetail() {
           {photos.map((p) => (
             <div key={p.id} className="relative aspect-square overflow-hidden rounded-xl bg-nude">
               <PhotoImg photo={p} className="h-full w-full object-cover" onClick={() => setViewing(p)} />
-              <span className={cls('absolute start-1.5 top-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold text-white', p.kind === 'before' ? 'bg-ink/70' : 'bg-rose')}>
+              <span className={cls('absolute start-1.5 top-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold text-onaccent', p.kind === 'before' ? 'bg-black/60' : 'bg-rose')}>
                 {t(p.kind)}
               </span>
             </div>
@@ -193,21 +188,21 @@ export default function ClientDetail() {
 
       {viewing && (
         <div className="animate-fade fixed inset-0 z-50 flex flex-col bg-black">
-          <div className="flex items-center justify-between p-3 text-white">
+          <div className="flex items-center justify-between p-3 text-onaccent">
             <button
               onClick={async () => {
                 if (!confirmDelete(t)) return
                 await db.photos.delete(viewing.id)
                 setViewing(null)
               }}
-              className="grid h-11 w-11 place-items-center rounded-full bg-white/10"
+              className="grid h-11 w-11 place-items-center rounded-full bg-onaccent/10"
             >
               <Icon name="trash" size={20} />
             </button>
             <span className="text-sm">
               {t(viewing.kind)} · {fmtDate(viewing.date, { day: 'numeric', month: 'long', year: 'numeric' })}
             </span>
-            <button onClick={() => setViewing(null)} className="grid h-11 w-11 place-items-center rounded-full bg-white/10">
+            <button onClick={() => setViewing(null)} className="grid h-11 w-11 place-items-center rounded-full bg-onaccent/10">
               <Icon name="close" />
             </button>
           </div>

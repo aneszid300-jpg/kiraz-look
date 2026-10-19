@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-rose: #b76e79;
+  --color-rose-dark: #9a5662;
+  --color-blush: #f3d9dc;
+  --color-blush-soft: #f9ecee;
+  --color-cream: #fbf6f3;
+  --color-nude: #ead9cf;
+  --color-gold: #c9a96e;
+  --color-ink: #3d2c2e;
+  --color-muted: #8a7376;
+  --font-sans: 'Inter', 'Tajawal', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', 'Tajawal', serif;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+
+  html[dir='rtl'] body {
+    font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* iOS zooms on inputs < 16px */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-sheet {
+  animation: sheet-up 0.22s ease-out;
+}
+.animate-fade {
+  animation: fade-in 0.18s ease-out;
+}

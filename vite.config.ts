@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/kiraz-look/',
+  base: './', // relative: works at a domain root (Netlify) and under a sub-path (GitHub Pages)
   plugins: [
     react(),
     tailwindcss(),
